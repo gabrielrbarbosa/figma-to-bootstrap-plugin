@@ -1,13 +1,9 @@
 import { className, sliceNum } from "../common/numToAutoFixed";
+import { commonIsAbsolutePosition, getCommonPositionValue } from "../common/position";
 import { bootstrapShadow } from "./builderImpl/bootstrapShadow";
-import {
-  bootstrapVisibility,
-  bootstrapOpacity,
-} from "./builderImpl/bootstrapBlend";
-import {
-  bootstrapColorFromFills,
-  bootstrapGradientFromFills,
-} from "./builderImpl/bootstrapColor";
+import { bootstrapBorderWidth, bootstrapBorderRadius } from "./builderImpl/bootstrapBorder";
+import { bootstrapVisibility, bootstrapOpacity } from "./builderImpl/bootstrapBlend";
+import { bootstrapColorFromFills } from "./builderImpl/bootstrapColor";
 import { bootstrapPadding } from "./builderImpl/bootstrapPadding";
 
 export class BootstrapBuilder {
@@ -38,9 +34,7 @@ export class BootstrapBuilder {
   ): this {
     this.addAttributes(
       bootstrapVisibility(node),
-      bootstrapRotation(node),
-      bootstrapOpacity(node),
-      bootstrapBlendMode(node)
+      bootstrapOpacity(node)
     );
 
     return this;
@@ -54,7 +48,6 @@ export class BootstrapBuilder {
       MinimalBlendMixin,
     optimizeLayout: boolean
   ): this {
-    this.size(node, optimizeLayout);
     this.autoLayoutPadding(node, optimizeLayout);
     this.position(node, optimizeLayout);
     this.blend(node);
@@ -66,13 +59,12 @@ export class BootstrapBuilder {
     this.radius(node);
     this.shadow(node);
     this.border(node);
-    this.blur(node);
     return this;
   }
 
   radius(node: SceneNode): this {
     if (node.type === "ELLIPSE") {
-      this.addAttributes("rounded-full");
+      this.addAttributes("rounded-circle");
     } else {
       this.addAttributes(bootstrapBorderRadius(node));
     }
@@ -86,7 +78,7 @@ export class BootstrapBuilder {
     }
 
     return this;
-  }
+  } 
 
   position(node: SceneNode, optimizeLayout: boolean): this {
     if (commonIsAbsolutePosition(node, optimizeLayout)) {
@@ -94,34 +86,31 @@ export class BootstrapBuilder {
 
       const parsedX = sliceNum(x);
       const parsedY = sliceNum(y);
+
       if (parsedX === "0") {
         this.addAttributes(`left-0`);
-      } else {
-        this.addAttributes(`left-[${parsedX}px]`);
-      }
+      } 
+
       if (parsedY === "0") {
         this.addAttributes(`top-0`);
-      } else {
-        this.addAttributes(`top-[${parsedY}px]`);
-      }
+      } 
 
-      this.addAttributes(`absolute`);
+      this.addAttributes(`position-absolute`);
     } else if (
       node.type === "GROUP" ||
       ("layoutMode" in node &&
         ((optimizeLayout ? node.inferredAutoLayout : null) ?? node)
           ?.layoutMode === "NONE")
     ) {
-      this.addAttributes("relative");
+      this.addAttributes(`position-relative`);
     }
     return this;
   }
 
   /**
-   * https://bootstrapcss.com/docs/text-color/
-   * example: text-blue-500
-   * example: text-opacity-25
-   * example: bg-blue-500
+   * https://getbootstrap.com/docs/5.3/utilities/text/
+   * example: text-white
+   * example: bg-white
    */
   customColor(
     paint: ReadonlyArray<Paint> | PluginAPI["mixed"],
@@ -130,9 +119,6 @@ export class BootstrapBuilder {
     // visible is true or undefinied (tests)
     if (this.visible) {
       let gradient = "";
-      if (kind === "bg") {
-        gradient = bootstrapGradientFromFills(paint);
-      }
       if (gradient) {
         this.addAttributes(gradient);
       } else {
@@ -143,34 +129,11 @@ export class BootstrapBuilder {
   }
 
   /**
-   * https://bootstrapcss.com/docs/box-shadow/
+   * https://getbootstrap.com/docs/5.3/utilities/shadows/#examples
    * example: shadow
    */
   shadow(node: BlendMixin): this {
     this.addAttributes(...bootstrapShadow(node));
-    return this;
-  }
-
-  // must be called before Position, because of the hasFixedSize attribute.
-  size(node: SceneNode, optimizeLayout: boolean): this {
-    const { width, height } = bootstrapSizePartial(node, optimizeLayout);
-
-    if (node.type === "TEXT") {
-      switch (node.textAutoResize) {
-        case "WIDTH_AND_HEIGHT":
-          break;
-        case "HEIGHT":
-          this.addAttributes(width);
-          break;
-        case "NONE":
-        case "TRUNCATE":
-          this.addAttributes(width, height);
-          break;
-      }
-    } else {
-      this.addAttributes(width, height);
-    }
-
     return this;
   }
 
@@ -183,32 +146,6 @@ export class BootstrapBuilder {
       );
     }
     return this;
-  }
-
-  blur(node: SceneNode) {
-    if ("effects" in node && node.effects.length > 0) {
-      const blur = node.effects.find((e) => e.type === "LAYER_BLUR");
-      if (blur) {
-        const blurValue = pxToBlur(blur.radius);
-        if (blurValue) {
-          this.addAttributes(`blur${blurValue ? `-${blurValue}` : ""}`);
-        }
-      }
-
-      const backgroundBlur = node.effects.find(
-        (e) => e.type === "BACKGROUND_BLUR"
-      );
-      if (backgroundBlur) {
-        const backgroundBlurValue = pxToBlur(backgroundBlur.radius);
-        if (backgroundBlurValue) {
-          this.addAttributes(
-            `backdrop-blur${
-              backgroundBlurValue ? `-${backgroundBlurValue}` : ""
-            }`
-          );
-        }
-      }
-    }
   }
 
   build(additionalAttr = ""): string {

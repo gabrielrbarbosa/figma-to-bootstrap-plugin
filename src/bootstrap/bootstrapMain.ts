@@ -153,7 +153,6 @@ const bootstrapGroup = (node: GroupNode, isJsx: boolean = false): string => {
     isJsx
   )
     .blend(node)
-    .size(node, localBootstrapSettings.optimizeLayout)
     .position(node, localBootstrapSettings.optimizeLayout);
 
   if (builder.attributes || builder.style) {
@@ -295,7 +294,6 @@ export const bootstrapSection = (node: SectionNode, isJsx: boolean): string => {
     localBootstrapSettings.layerName,
     isJsx
   )
-    .size(node, localBootstrapSettings.optimizeLayout)
     .position(node, localBootstrapSettings.optimizeLayout)
     .customColor(node.fills, "bg");
 

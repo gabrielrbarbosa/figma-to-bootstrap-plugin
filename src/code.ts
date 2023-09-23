@@ -10,8 +10,6 @@ export type PluginSettings = {
   optimizeLayout: boolean;
   layerName: boolean;
   responsiveRoot: boolean;
-  flutterGenerationMode: string;
-  swiftUIGenerationMode: string;
   roundBootstrap: boolean;
 };
 

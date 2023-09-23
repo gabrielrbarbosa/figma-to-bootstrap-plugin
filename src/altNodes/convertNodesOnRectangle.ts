@@ -14,45 +14,7 @@ export const convertNodesOnRectangle = (
       "Node is missing an id! This error should only happen in tests."
     );
   }
-
-  // TODO Make a return?
-  // const colliding = retrieveCollidingItems(node.children);
-
-  // const parentsKeys = Object.keys(colliding);
-  // // start with all children. This is going to be filtered.
-  // let updatedChildren: Array<SceneNode> = [...node.children];
-
-  // console.log("colliding are", parentsKeys);
-
-  // parentsKeys.forEach((key) => {
-  //   // dangerous cast, but this is always true
-  //   const parentNode = node.children.find((d) => d.id === key) as RectangleNode;
-
-  //   // retrieve the position. Key should always be at the left side, so even when other items are removed, the index is kept the same.
-  //   // const indexPosition = updatedChildren.findIndex((d) => d.id === key);
-
-  //   // filter the children to remove those that are being modified
-  //   updatedChildren = updatedChildren.filter(
-  //     (d) => !colliding[key].map((dd) => dd.id).includes(d.id) && key !== d.id
-  //   );
-
-  //   console.log("updatedChildren is now ", updatedChildren);
-  //   const frameNode = convertRectangleToFrame(parentNode);
-
-  //   // todo when the soon-to-be-parent is larger than its parent, things get weird. Happens, for example, when a large image is used in the background. Should this be handled or is this something user should never do?
-  //   overrideReadonlyProperty(frameNode, "children", [...colliding[key]]);
-
-  //   colliding[key].forEach((d) => {
-  //     overrideReadonlyProperty(d, "parent", frameNode);
-  //     d.x = d.x - frameNode.x;
-  //     d.y = d.y - frameNode.y;
-  //   });
-  // });
-
-  // if (updatedChildren.length > 0) {
-  //   overrideReadonlyProperty(node, "children", updatedChildren);
-  // }
-
+  
   return node;
 };
 

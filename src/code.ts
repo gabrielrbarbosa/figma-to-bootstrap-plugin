@@ -1,7 +1,8 @@
 import { convertIntoNodes } from "./altNodes/altConversion";
 import { bootstrapMain } from "./bootstrap/bootstrapMain";
+import format from "html-format";
 
-export type FrameworkTypes = "Flutter" | "SwiftUI" | "HTML" | "Bootstrap";
+export type FrameworkTypes = "Bootstrap";
 
 export type PluginSettings = {
   framework: FrameworkTypes;
@@ -14,11 +15,7 @@ export type PluginSettings = {
 };
 
 export const run = (settings: PluginSettings) => {
-  // ignore when nothing was selected
   if (figma.currentPage.selection.length === 0) {
-    figma.ui.postMessage({
-      type: "empty",
-    });
     return;
   }
 
@@ -26,36 +23,54 @@ export const run = (settings: PluginSettings) => {
     figma.currentPage.selection,
     null
   );
-  let result = "";
-  switch (settings.framework) {
-    case "Bootstrap":
-      result = bootstrapMain(convertedSelection, settings);
-      break;
-  }
 
-  figma.ui.postMessage({
-    type: "code",
-    data: result,
-    settings: settings,
-    htmlPreview:
-      convertedSelection.length > 0
-        ? {
-            size: convertedSelection.map((node) => ({
-              width: node.width,
-              height: node.height,
-            }))[0],
-            content: bootstrapMain(
-              convertedSelection,
-              {
-                ...settings,
-                jsx: false,
-              },
-            ),
-          }
-        : null,
-    //colors: retrieveGenericSolidUIColors(settings.framework),
-    //gradients: retrieveGenericGradients(settings.framework),
-    preferences: settings,
-    // text: retrieveBootstrapText(convertedSelection),
-  });
+  let bootstrapCode = bootstrapMain(convertedSelection, settings);
+
+  let html = `<!DOCTYPE html>
+	<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+		<title>Bootstrap Code Preview</title>
+    <style>
+      div {
+        border: 1px solid red;
+        min-height: 50px;
+      }
+    </style>
+	</head>
+    <body>
+		<div class="row d-flex justify-content-center">
+			<button class="btn btn-primary" id="copyButton">Copy Code</button>
+		</div>
+		<main>
+			${bootstrapCode}
+		</main>
+
+		<script>
+			document.addEventListener('DOMContentLoaded', function() {
+				function copyToClipboard() {
+					const codeElement = document.querySelector('main');
+					if (codeElement) {
+						const code = document.documentElement.outerHTML || '';
+						const textArea = document.createElement('textarea');
+						textArea.value = code;
+						document.body.appendChild(textArea);
+						textArea.select();
+						document.execCommand('copy');
+						document.body.removeChild(textArea);
+						alert('Code copied to clipboard!');
+					}
+				}
+
+				const copyButton = document.getElementById('copyButton');
+				if (copyButton) {
+					copyButton.addEventListener('click', copyToClipboard);
+				}
+			});
+		</script>
+    </body>
+	</html>`;
+  figma.showUI(html);
 };

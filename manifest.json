@@ -1,14 +1,21 @@
 {
-  "id": "figma-to-bootstrap-plugin",
-  "name": "Figma to Bootstrap 5 Plugin",
   "api": "1.0.0",
   "editorType": [
     "figma",
     "dev"
   ],
-  "capabilities": ["inspect", "codegen"],
+  "id": "figma-to-bootstrap-plugin",
+  "name": "Figma to Bootstrap 5 Plugin",
   "main": "build/main.js",
+  "ui": "build/ui.js",
+  "capabilities": [
+    "inspect",
+    "codegen"
+  ],
   "codegenLanguages": [
-    { "label": "Bootstrap", "value": "bootstrap" }
+    {
+      "label": "Bootstrap",
+      "value": "bootstrap"
+    }
   ]
 }

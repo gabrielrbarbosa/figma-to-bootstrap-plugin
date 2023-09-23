@@ -14,11 +14,18 @@
     "watch": "build-figma-plugin --typecheck --watch"
   },
   "figma-plugin": {
+    "id": "figma-to-bootstrap-plugin",
+    "name": "Figma to Bootstrap 5 Plugin",
+    "api": "1.0.0",
+    "ui": "src/ui.ts",
     "editorType": [
-      "figma"
+      "figma",
+      "dev"
     ],
-    "id": "figma-plugin",
-    "name": "Plugin",
-    "main": "src/main.ts"
+    "capabilities": ["inspect", "codegen"],
+    "main": "src/main.ts",
+    "codegenLanguages": [
+      { "label": "Bootstrap", "value": "bootstrap" }
+    ]
   }
 }

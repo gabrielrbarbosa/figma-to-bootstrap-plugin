@@ -1,5 +1,16 @@
 export type { PluginSettings } from "./code";
 export { bootstrapMain } from "./bootstrap/bootstrapMain";
 export { convertIntoNodes } from "./altNodes/altConversion";
-export { run } from "./code";
-import format from "html-format";
+import { run } from "./code";
+
+export default function() {
+    run({
+        framework: "Bootstrap",
+        jsx: false,
+        inlineStyle: false,
+        optimizeLayout: true,
+        layerName: true,
+        responsiveRoot: true,
+        roundBootstrap: true
+    });
+}

@@ -59,11 +59,6 @@ export const commonSortChildrenWhenInferredAutoLayout = (
       // NONE is a bug from Figma.
       case "NONE":
       case "VERTICAL":
-        console.log(
-          "ordering",
-          children.map((c) => c.name),
-          children.sort((a, b) => a.y - b.y).map((c) => c.name)
-        );
         return children.sort((a, b) => a.y - b.y);
     }
   }
@@ -78,7 +73,7 @@ export const bootstrapMain = (
   localBootstrapSettings = settings;
   previousExecutionCache = [];
 
-  let result = bootstrapWidgetGenerator(sceneNode, localBootstrapSettings.jsx);
+  let result = bootstrapWidgetGenerator(sceneNode, false);
 
   // remove the initial \n that is made in Container.
   if (result.length > 0 && result.startsWith("\n")) {

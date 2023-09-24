@@ -1,12 +1,12 @@
 import { pxToLayoutSize } from "../conversionTables";
 
 const getFlexDirection = (node: InferredAutoLayoutResult): string =>
-  node.layoutMode === "HORIZONTAL" ? "" : "flex-column";
+  node.layoutMode === "HORIZONTAL" || node.layoutPositioning === "AUTO"  ? "" : "flex-column";
 
 const getJustifyContent = (node: InferredAutoLayoutResult): string => {
   switch (node.primaryAxisAlignItems) {
     case "MIN":
-      return "justify-content-start";
+      return "";
     case "CENTER":
       return "justify-content-center";
     case "MAX":
@@ -41,8 +41,8 @@ const getFlex = (
   node.parent &&
   "layoutMode" in node.parent &&
   node.parent.layoutMode === autoLayout.layoutMode
-    ? "flex"
-    : "inline-flex";
+    ? "d-flex"
+    : "";
 
 export const bootstrapAutoLayoutProps = (
   node: SceneNode,

@@ -37,39 +37,34 @@ export const run = (settings: PluginSettings) => {
       div {
         border: 1px solid red;
         min-height: 50px;
+		min-width: 50px;
       }
     </style>
 	</head>
     <body>
+		<script>
+			function copyToClipboard(type) {
+				const codeElement = document.querySelector('main');
+				if (codeElement) {
+					const code = type == 'html' ? document.documentElement.outerHTML : codeElement.outerHTML;
+					const textArea = document.createElement('textarea');
+					textArea.value = code;
+					document.body.appendChild(textArea);
+					textArea.select();
+					document.execCommand('copy');
+					document.body.removeChild(textArea);
+					alert('Code copied to clipboard!');
+				}
+			}
+		</script>
+
 		<div class="row d-flex justify-content-center">
-			<button class="btn btn-primary" id="copyButton">Copy Code</button>
+			<button class="btn btn-primary" onclick="copyToClipboard('html')">Copy Full HTML</button>
+			<button class="btn btn-primary" onclick="copyToClipboard('layer')">Copy Layer Code</button>
 		</div>
 		<main>
 			${bootstrapCode}
 		</main>
-
-		<script>
-			document.addEventListener('DOMContentLoaded', function() {
-				function copyToClipboard() {
-					const codeElement = document.querySelector('main');
-					if (codeElement) {
-						const code = document.documentElement.outerHTML || '';
-						const textArea = document.createElement('textarea');
-						textArea.value = code;
-						document.body.appendChild(textArea);
-						textArea.select();
-						document.execCommand('copy');
-						document.body.removeChild(textArea);
-						alert('Code copied to clipboard!');
-					}
-				}
-
-				const copyButton = document.getElementById('copyButton');
-				if (copyButton) {
-					copyButton.addEventListener('click', copyToClipboard);
-				}
-			});
-		</script>
     </body>
 	</html>`;
   figma.showUI(html);

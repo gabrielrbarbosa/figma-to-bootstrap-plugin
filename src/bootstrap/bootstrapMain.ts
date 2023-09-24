@@ -50,7 +50,8 @@ export const commonSortChildrenWhenInferredAutoLayout = (
   if (
     optimize &&
     "inferredAutoLayout" in node &&
-    node.inferredAutoLayout !== null
+    node.inferredAutoLayout !== null &&
+    node.layoutWrap != "WRAP"
   ) {
     const children = [...node.children];
     switch (node.inferredAutoLayout.layoutMode) {
@@ -125,10 +126,6 @@ const bootstrapWidgetGenerator = (
 };
 
 const bootstrapGroup = (node: GroupNode, isJsx: boolean = false): string => {
-  // ignore the view when size is zero or less
-  // while technically it shouldn't get less than 0, due to rounding errors,
-  // it can get to values like: -0.000004196293048153166
-  // also ignore if there are no children inside, which makes no sense
   if (node.width < 0 || node.height <= 0 || node.children.length === 0) {
     return "";
   }
@@ -183,7 +180,7 @@ export const bootstrapText = (node: TextNode, isJsx: boolean): string => {
       .join("");
   }
 
-  return `\n<div${layoutBuilder.build()}>${content}</div>`;
+  return `\n<div${layoutBuilder.build(bootstrapGrid(node))}>${content}</div>`;
 };
 
 const bootstrapFrame = (
@@ -198,6 +195,8 @@ const bootstrapFrame = (
     isJsx
   );
 
+  console.log(node);
+
   if (node.layoutMode !== "NONE") {
     const rowColumn = bootstrapAutoLayoutProps(node, node);
     return bootstrapContainer(node, childrenStr, rowColumn, isJsx);
@@ -211,6 +210,45 @@ const bootstrapFrame = (
     // children needs to be absolute
     return bootstrapContainer(node, childrenStr, "", isJsx);
   }
+
+};
+
+export const bootstrapGrid = (
+  node: SceneNode &
+    SceneNodeMixin &
+    BlendMixin &
+    LayoutMixin &
+    GeometryMixin &
+    MinimalBlendMixin,
+) : string => {
+  let classes = '';
+
+  if (node.parent) {
+    let breakpoint = '';
+
+    // @ts-ignore
+    if (node.parent.width > 1400) breakpoint = 'xxl-'; 
+    // @ts-ignore
+    else if(node.parent.width > 1200) breakpoint = 'xl-'; 
+    // @ts-ignore
+    else if(node.parent.width > 992) breakpoint = 'lg-'; 
+    // @ts-ignore
+    else if(node.parent.width > 768) breakpoint = 'md-'; 
+    // @ts-ignore
+    else if(node.parent.width > 768) breakpoint = 'sm-';
+    else breakpoint = '';
+
+    //console.log(node.name + ': ' + node.width + '/' + node.parent.width + '*12=' + Math.round(node.width / node.parent.width * 12));
+    // @ts-ignore
+    classes += `col-${breakpoint}${Math.round(node.width / node.parent.width * 12)}`;
+  }
+
+  // @ts-ignore
+  if (node.children && node.children.length > 1) {
+    classes += ' row';
+  }
+
+  return classes;
 };
 
 // properties named propSomething always take care of ","
@@ -226,9 +264,6 @@ export const bootstrapContainer = (
   additionalAttr: string,
   isJsx: boolean
 ): string => {
-  // ignore the view when size is zero or less
-  // while technically it shouldn't get less than 0, due to rounding errors,
-  // it can get to values like: -0.000004196293048153166
   if (node.width < 0 || node.height < 0) {
     return children;
   }
@@ -238,7 +273,8 @@ export const bootstrapContainer = (
     .commonShapeStyles(node);
 
   if (builder.attributes || additionalAttr) {
-    const build = builder.build(additionalAttr);
+   builder.addAttributes(bootstrapGrid(node));
+    let build = builder.build(additionalAttr);
 
     // image fill and no children -- let's emit an <img />
     let tag = "div";

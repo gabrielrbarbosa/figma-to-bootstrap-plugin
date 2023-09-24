@@ -1,10 +1,10 @@
 import { bootstrapColorFromFills } from "./builderImpl/bootstrapColor";
 import { pxToFontSize } from "./conversionTables";
 import { BootstrapBuilder } from "./bootstrapBuilder";
+import { globalTextStyleSegments } from "../altNodes/altConversion";
 
 export class BootstrapTextBuilder extends BootstrapBuilder {
   getTextSegments(id: string): { style: string; text: string }[] {
-    let globalTextStyleSegments: Record<string, StyledTextSegment[]> = {};
     const segments = globalTextStyleSegments[id];
     if (!segments) {
       return [];
@@ -68,7 +68,7 @@ export class BootstrapTextBuilder extends BootstrapBuilder {
   };
 
   fontFamily = (fontName: FontName): string => {
-    return "font-['" + fontName.family + "']";
+    return "font-family-" + fontName.family + "";
   };
 
   /**
@@ -169,7 +169,7 @@ export class BootstrapTextBuilder extends BootstrapBuilder {
       case "UNDERLINE":
         return "text-decoration-underline";
       case "NONE":
-        return "text-decoration-none";
+        return "";
     }
   }
 

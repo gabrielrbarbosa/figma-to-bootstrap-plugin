@@ -9,7 +9,7 @@ export default function() {
         jsx: false,
         inlineStyle: false,
         optimizeLayout: true,
-        layerName: true,
+        layerName: false,
         responsiveRoot: true,
         roundBootstrap: true
     });

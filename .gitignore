@@ -1,6 +1,7 @@
 .DS_Store
 *.log
 *.css.d.ts
+.vscode/
 /build/
 node_modules/
 package-lock.json

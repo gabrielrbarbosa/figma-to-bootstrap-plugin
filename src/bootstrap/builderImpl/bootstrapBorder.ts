@@ -87,11 +87,11 @@ export const bootstrapBorderWidth = (node: SceneNode): string => {
   }
 
   const getBorder = (weight: number, kind: string) => {
-    if (weight >= 5) return 'border-5';
-    if (weight >= 4) return 'border-4';
-    if (weight >= 3) return 'border-3';
-    if (weight >= 2) return 'border-2';
-    if (weight >= 1) return 'border-1';
+    if (weight >= 5) return `border border-${kind}5`;
+    if (weight >= 4) return `border border-${kind}4`;
+    if (weight >= 3) return `border border-${kind}3`;
+    if (weight >= 2) return `border border-${kind}2`;
+    if (weight >= 1) return `border border-${kind}1`;
     return "";
   };
 

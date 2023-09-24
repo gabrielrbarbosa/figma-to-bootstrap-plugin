@@ -1,5 +1,4 @@
 import { bootstrapColorFromFills } from "./builderImpl/bootstrapColor";
-import { pxToFontSize } from "./conversionTables";
 import { BootstrapBuilder } from "./bootstrapBuilder";
 import { globalTextStyleSegments } from "../altNodes/altConversion";
 
@@ -38,7 +37,12 @@ export class BootstrapTextBuilder extends BootstrapBuilder {
   };
 
   fontSize = (fontSize: number) => {
-    return `fs-${pxToFontSize(fontSize)}`;
+    if (fontSize > 40) return 'fs-1';
+    else if (fontSize > 32) return 'fs-2';
+    else if (fontSize > 28) return 'fs-3';
+    else if (fontSize > 24) return 'fs-4';
+    else if (fontSize > 20) return 'fs-5';
+    else return 'fs-6';
   };
 
   fontWeight = (fontWeight: number): string => {

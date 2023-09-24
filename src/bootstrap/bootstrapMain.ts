@@ -195,7 +195,7 @@ const bootstrapFrame = (
     isJsx
   );
 
-  console.log(node);
+  //console.log(node);
 
   if (node.layoutMode !== "NONE") {
     const rowColumn = bootstrapAutoLayoutProps(node, node);

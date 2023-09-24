@@ -19,7 +19,7 @@ const getJustifyContent = (node: InferredAutoLayoutResult): string => {
 const getAlignItems = (node: InferredAutoLayoutResult): string => {
   switch (node.counterAxisAlignItems) {
     case "MIN":
-      return "align-items-start";
+      return "";
     case "CENTER":
       return "align-items-center";
     case "MAX":
@@ -28,11 +28,6 @@ const getAlignItems = (node: InferredAutoLayoutResult): string => {
       return "align-items-baseline";
   }
 };
-
-const getGap = (node: InferredAutoLayoutResult): string =>
-  node.itemSpacing > 0 && node.primaryAxisAlignItems !== "SPACE_BETWEEN"
-    ? `gap-${pxToLayoutSize(node.itemSpacing)}`
-    : "";
 
 const getFlex = (
   node: SceneNode,
@@ -52,7 +47,6 @@ export const bootstrapAutoLayoutProps = (
     flexDirection: getFlexDirection(autoLayout),
     justifyContent: getJustifyContent(autoLayout),
     alignItems: getAlignItems(autoLayout),
-    gap: getGap(autoLayout),
     flex: getFlex(node, autoLayout),
   })
     .filter((value) => value !== "")

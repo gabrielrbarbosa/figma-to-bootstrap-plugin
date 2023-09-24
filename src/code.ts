@@ -35,9 +35,9 @@ export const run = (settings: PluginSettings) => {
 		<title>Bootstrap Code Preview</title>
     <style>
       div {
-        border: 1px solid red;
-        min-height: 50px;
-		min-width: 50px;
+        /*border: 1px solid red;*/
+        /*min-height: 50px;*/
+		/*min-width: 50px;*/
       }
     </style>
 	</head>

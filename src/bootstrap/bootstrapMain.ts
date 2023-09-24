@@ -180,7 +180,8 @@ export const bootstrapText = (node: TextNode, isJsx: boolean): string => {
       .join("");
   }
 
-  return `\n<div${layoutBuilder.build(bootstrapGrid(node))}>${content}</div>`;
+  let classes = bootstrapGrid(node) + ' m-0'; // remove browser default padding for <p> tags
+  return `\n<p${layoutBuilder.build(classes)}>${content}</p>`;
 };
 
 const bootstrapFrame = (

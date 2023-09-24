@@ -14,7 +14,7 @@
     "watch": "build-figma-plugin --typecheck --watch"
   },
   "figma-plugin": {
-    "id": "figma-to-bootstrap-plugin",
+    "id": "1287660587112027215",
     "name": "Figma to Bootstrap 5 Plugin",
     "api": "1.0.0",
     "ui": "src/ui.ts",

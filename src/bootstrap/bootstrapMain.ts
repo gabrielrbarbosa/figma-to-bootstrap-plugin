@@ -176,11 +176,11 @@ export const bootstrapText = (node: TextNode, isJsx: boolean): string => {
     content = styledHtml[0].text;
   } else {
     content = styledHtml
-      .map((style: { style: any; text: any; }) => `<span style="${style.style}">${style.text}</span>`)
+      .map((style: { style: any; text: any; }) => `<span class="${style.style}">${style.text}</span>`)
       .join("");
   }
 
-  let classes = bootstrapGrid(node) + ' m-0'; // remove browser default padding for <p> tags
+  let classes = bootstrapGrid(node) + ' m-0'; // remove browser default margin for <p> tags
   return `\n<p${layoutBuilder.build(classes)}>${content}</p>`;
 };
 

@@ -41,7 +41,7 @@ const pxToRemToBootstrap = (
     return conversionMap[nearestValue(value / 16, keys)];
   }
 
-  return `[${sliceNum(value)}px]`;
+  return `${sliceNum(value)}`;
 };
 
 const pxToBootstrap = (
@@ -57,7 +57,7 @@ const pxToBootstrap = (
     return conversionMap[nearestValue(value, keys)];
   }
 
-  return `[${sliceNum(value)}px]`;
+  return `${sliceNum(value)}`;
 };
 
 const mapFontSize: Record<number, string> = {
@@ -97,9 +97,7 @@ const mapWidthHeightSize: Record<number, string> = {
   4: "1"
 };
 
-export const opacityValues = [
-  0, 5, 10, 20, 25, 30, 40, 50, 60, 70, 75, 80, 90, 95,
-];
+export const opacityValues = [ 10, 25, 50, 75, 100 ];
 
 export const nearestOpacity = (nodeOpacity: number): number =>
   nearestValue(nodeOpacity * 100, opacityValues);
@@ -113,5 +111,5 @@ export const pxToLayoutSize = (value: number): string => {
     return bootstrapValue;
   }
 
-  return `[${sliceNum(value)}px]`;
+  return `${sliceNum(value)}`;
 };

@@ -138,11 +138,11 @@ export const run = (settings: PluginSettings) => {
           <button class="btn btn-primary w-100 rounded-0" onclick="copyToClipboard('layer')">Copy Layer Code</button>
         </div>
       </div>
-      <div id="component" class="container-fluid">
+      <div id="component" class="container-fluid py-3">
         ${bootstrapCode}
       </div>
     </body>
     </html>`;
-    figma.showUI(html, {width:768, height: 768});
+    figma.showUI(html, {width: 768, height: 500});
   };
   

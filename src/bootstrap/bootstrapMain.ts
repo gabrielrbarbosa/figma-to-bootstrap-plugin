@@ -180,7 +180,7 @@ export const bootstrapText = (node: TextNode, isJsx: boolean): string => {
       .join("");
   }
 
-  let classes = bootstrapGrid(node) + ' m-0'; // remove browser default margin for <p> tags
+  let classes = bootstrapGrid(node) + ' m-0 px-3 py-2'; // remove browser default margin for <p> tags
   return `\n<p${layoutBuilder.build(classes)}>${content}</p>`;
 };
 

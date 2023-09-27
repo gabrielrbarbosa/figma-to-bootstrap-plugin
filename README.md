@@ -2,6 +2,8 @@
 
 [![Figma to Code](cover.png)](https://www.figma.com/community/plugin/1287660587112027215)
 
+[![Figma to Code](plugin-example.gif)](https://www.figma.com/community/plugin/1287660587112027215)
+
 ## Development guide
 
 *This plugin is built with [Create Figma Plugin](https://yuanqing.github.io/create-figma-plugin/). and some utilities from [FigmaToCode](https://github.com/bernaferrari/FigmaToCode/)*

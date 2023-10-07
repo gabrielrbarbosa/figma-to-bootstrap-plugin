@@ -22,6 +22,11 @@
       "figma",
       "dev"
     ],
+    "networkAccess": {
+      "allowedDomains": ["https://cdn.jsdelivr.net"],
+      "reasoning": "Bootstrap 5 CDN",
+      "devAllowedDomains": ["https://cdn.jsdelivr.net"]
+    },
     "capabilities": ["inspect", "codegen"],
     "main": "src/main.ts",
     "codegenLanguages": [

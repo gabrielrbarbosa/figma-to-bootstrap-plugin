@@ -12,6 +12,15 @@
     "inspect",
     "codegen"
   ],
+  "networkAccess": {
+    "allowedDomains": [
+      "https://cdn.jsdelivr.net"
+    ],
+    "devAllowedDomains": [
+      "https://cdn.jsdelivr.net"
+    ],
+    "reasoning": "Bootstrap 5 CDN"
+  },
   "codegenLanguages": [
     {
       "label": "Bootstrap",

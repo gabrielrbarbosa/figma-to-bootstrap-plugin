@@ -215,37 +215,25 @@ const bootstrapFrame = (
 };
 
 export const bootstrapGrid = (
-  node: SceneNode &
-    SceneNodeMixin &
-    BlendMixin &
-    LayoutMixin &
-    GeometryMixin &
-    MinimalBlendMixin,
+  node: SceneNode
 ) : string => {
   let classes = '';
 
-  if (node.parent) {
+  if (node.parent && 'width' in node.parent) {
     let breakpoint = '';
 
-    // @ts-ignore
     if (node.parent.width > 1400) breakpoint = 'xxl-'; 
-    // @ts-ignore
     else if(node.parent.width > 1200) breakpoint = 'xl-'; 
-    // @ts-ignore
     else if(node.parent.width > 992) breakpoint = 'lg-'; 
-    // @ts-ignore
     else if(node.parent.width > 768) breakpoint = 'md-'; 
-    // @ts-ignore
     else if(node.parent.width > 768) breakpoint = 'sm-';
     else breakpoint = '';
 
     //console.log(node.name + ': ' + node.width + '/' + node.parent.width + '*12=' + Math.round(node.width / node.parent.width * 12));
-    // @ts-ignore
     classes += `col-${breakpoint}${Math.round(node.width / node.parent.width * 12)}`;
   }
 
-  // @ts-ignore
-  if (node.children && node.children.length > 1) {
+  if ('children' in node && node.children.length > 1) {
     classes += ' row';
   }
 
